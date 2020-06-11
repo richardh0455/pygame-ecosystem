@@ -2,6 +2,7 @@ import pygame, sys
 from random import randrange
 # Sets size of grid
 from Cell import Cell
+from Fox import Fox
 from TerrainType import TerrainType
 from world_generation import WorldGeneration
 
@@ -25,7 +26,6 @@ CELLWIDTH = 5
 # The clock will be used to control how fast the screen updates
 clock = pygame.time.Clock()
 WORLDSIZE = 100
-cells = []
 def generate_game_world():
     generator = WorldGeneration()
     return generator.generate_game_world()
@@ -36,12 +36,18 @@ def get_color():
     return list[random]
 
 
-def draw_cell (cell, x, y):
+def draw_cell (cell, x, y, animals):
     color = cell.terrainType.value
+    for animal in animals:
+        if animal.location == (x,y):
+            color = animal.color
     pygame.draw.rect(DISPLAYSURF, color, [x, y, x+CELLWIDTH, y+CELLWIDTH], 0)
 
 def main():
     cells = generate_game_world()
+
+    fox = Fox()
+    animals = [fox]
     carryOn = True
     # -------- Main Program Loop -----------
     while carryOn:
@@ -52,6 +58,11 @@ def main():
 
         # --- Game logic should go here
 
+        for animal in animals:
+            next_move = animal.get_next_move((0, 0, len(cells[0]) * CELLWIDTH, len(cells) * CELLWIDTH))
+            print(next_move)
+            animal.update_location(next_move, CELLWIDTH)
+
         # --- Drawing code should go here
         # First, clear the screen to white.
         DISPLAYSURF.fill(WHITE)
@@ -60,7 +71,7 @@ def main():
         for row in cells:
             columnOffset = 0
             for cell in row:
-                draw_cell(cell, columnOffset, rowOffset)
+                draw_cell(cell, columnOffset, rowOffset, animals)
                 columnOffset += CELLWIDTH
             rowOffset += CELLWIDTH
 

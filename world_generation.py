@@ -8,7 +8,7 @@ from TerrainType import TerrainType
 class WorldGeneration:
 
     shape = (100,100)
-    scale = 100.0
+    scale = 25.0
     octaves = 6
     persistence = 0.5
     lacunarity = 2.0
@@ -34,13 +34,13 @@ class WorldGeneration:
             world_row = []
             for cell in row:
                 terrain_type = None
-                if cell < -0.05:
+                if cell < -0.2:
                     terrain_type = TerrainType.WATER
-                elif cell < 0:
+                elif cell < -0.1:
                     terrain_type = TerrainType.SAND
-                elif cell < 0.5:
+                elif cell < 0.2:
                     terrain_type = TerrainType.GRASS
-                elif cell < 0.75:
+                elif cell < 0.6:
                     terrain_type = TerrainType.DIRT
                 elif cell < 1:
                     terrain_type = TerrainType.ROCK
