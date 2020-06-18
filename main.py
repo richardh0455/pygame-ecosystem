@@ -39,15 +39,16 @@ def get_color():
 def draw_cell (cell, x, y, animals):
     color = cell.terrainType.value
     for animal in animals:
-        if animal.location == (x/CELLWIDTH,y/CELLWIDTH):
+        if animal._location == (x / CELLWIDTH, y / CELLWIDTH):
             color = animal.color
     pygame.draw.rect(DISPLAYSURF, color, [x, y, x+CELLWIDTH, y+CELLWIDTH], 0)
 
 def main():
     cells = generate_game_world()
 
-    fox = Fox()
-    animals = [fox]
+    male_fox = Fox(cells[0][0], "male")
+    female_fox = Fox(cells[10][10], "female")
+    animals = [male_fox, female_fox]
     carryOn = True
     # -------- Main Program Loop -----------
     while carryOn:
@@ -59,8 +60,7 @@ def main():
         # --- Game logic should go here
 
         for animal in animals:
-            next_move = animal.get_next_move(cells)
-            animal.update_location(next_move)
+            animal.move(cells)
 
         # --- Drawing code should go here
         # First, clear the screen to white.
