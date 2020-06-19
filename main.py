@@ -1,6 +1,7 @@
 import pygame, sys
 from random import randrange
 # Sets size of grid
+from Carcass import Carcass
 from Cell import Cell
 from Fox import Fox
 from TerrainType import TerrainType
@@ -60,7 +61,24 @@ def main():
         # --- Game logic should go here
 
         for animal in animals:
-            animal.move(cells)
+            if type(animal) is not Carcass:
+                if animal.is_dead():
+                    cell = cells[animal._location[1]][animal._location[0]]
+                    cell.remove_animal(animal)
+                    carcass = Carcass(animal, cell)
+                    cell.add_animal(carcass)
+                    animals.remove(animal)
+                    animals.append(carcass)
+                else:
+                    animal.increase_age()
+                    animal.move(cells)
+            else:
+                animal.rot()
+                if animal.has_rotted():
+                    cell = cells[animal._location[1]][animal._location[0]]
+                    cell.remove_animal(animal)
+                    animals.remove(animal)
+
 
         # --- Drawing code should go here
         # First, clear the screen to white.

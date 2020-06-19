@@ -13,7 +13,7 @@ class Fox(Animal):
         # gender = Animal.genders[randint(0,1)]
         attraction = ("male", "female")[gender == "male"]
         needs = [Need(*Needs.WATER.value), Need(*Needs.SLEEP.value), RelationalNeed(*Needs.SEX.value, {"species": type(self), "gender": attraction})]
-        super().__init__(color,needs, starting_cell, gender)
+        super().__init__(color,needs, starting_cell, gender, 525600)
 
 
 

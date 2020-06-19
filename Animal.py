@@ -1,14 +1,16 @@
 from operator import attrgetter
 from random import randint
 import math
+
 from TerrainType import TerrainType
 
 
 class Animal:
     genders = ["male", "female"]
-    def __init__(self, color, needs, starting_cell, gender):
-
+    def __init__(self, color, needs, starting_cell, gender, lifespan):
         self.gender = gender
+        self.age = 0
+        self.lifespan = lifespan
         self.color = color
         ## location is (x,y)
         self._location = starting_cell.location
@@ -17,6 +19,11 @@ class Animal:
         self._sight_radius = 20
         self._objective= None
 
+    def increase_age(self):
+        self.age += 1
+
+    def is_dead(self):
+        return self.age >= self.lifespan or min(self._needs, key=attrgetter('level')).level <= 0
 
     def move(self, cells):
         next_move = self.__get_next_move(cells)
@@ -50,6 +57,7 @@ class Animal:
     def __get_next_objective(self):
         ##Find the need with the lowest value
         return min(self._needs, key=attrgetter('level'))
+
 
     def __execute_objective(self):
         self._objective.refresh_need()
